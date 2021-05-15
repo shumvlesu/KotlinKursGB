@@ -23,7 +23,7 @@ class MVVMFragment : Fragment() {
         viewModel.login(username, password)
     }
 
-    private fun render(viewState: ViewState){
+    private fun render(viewState: ViewState) {
         //loadingBar.visibility = if (viewState.isLoading) View.VISIBLE else View.ONE
     }
 

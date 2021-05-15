@@ -43,7 +43,8 @@ class MVPFragment : Fragment(), View {
 
 class Presenter(private val model: Model) {
 
-    var view:View? = null //Presenter живет обычно дольше чем активити или фрагмент. И презентр тогда с вьюхой взаимодействовать не должен
+    var view: View? =
+        null //Presenter живет обычно дольше чем активити или фрагмент. И презентр тогда с вьюхой взаимодействовать не должен
 
     fun login(username: String, password: String) {
         if (username.isEmpty() && password.isEmpty()) {
