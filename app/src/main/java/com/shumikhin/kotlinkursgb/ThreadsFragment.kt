@@ -1,5 +1,6 @@
 package com.shumikhin.kotlinkursgb
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -85,7 +86,20 @@ class ThreadsFragment : Fragment() {
 
         }
 
+        initServiceButton()
 
+    }
+
+
+    //Service
+    private fun initServiceButton() {
+        binding.serviceButton.setOnClickListener {
+            context?.let {
+                it.startService(Intent(it, MainService::class.java).apply {
+                    putExtra(MAIN_SERVICE_STRING_EXTRA, getString(R.string.hello_from_thread_fragment))
+                })
+            }
+        }
     }
 
     private fun startCalculations(seconds: Int): String {
