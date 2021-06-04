@@ -63,7 +63,7 @@ class ThreadsFragment : Fragment() {
         //HandlerThread
         // При запуске через HandlerThread все операции выстраиваются в очередь
         val handlerThread = HandlerThread(getString(R.string.my_handler_thread))
-        handlerThread.start()
+        handlerThread.start()// Сатртуем HandlerThread и ждем какую либо задачу
 
         val handler = Handler(handlerThread.looper)
 
@@ -74,7 +74,7 @@ class ThreadsFragment : Fragment() {
                 textSize = resources.getDimension(R.dimen.main_container_text_size)
             })
 
-            handler.post {
+            handler.post { //помещаем нашу задачу в HandlerThread
                 startCalculations(binding.editText.text.toString().toInt())
                 binding.mainContainer.post {
                     binding.mainContainer.addView(AppCompatTextView(it.context).apply {
