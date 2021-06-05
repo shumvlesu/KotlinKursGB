@@ -38,14 +38,11 @@ class ThreadsFragment : Fragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        //context?.registerReceiver(testReceiver, IntentFilter(TEST_BROADCAST_INTENT_FILTER))
         context?.let {
-            LocalBroadcastManager.getInstance(it)
-                .registerReceiver(testReceiver,
-                    IntentFilter(TEST_BROADCAST_INTENT_FILTER))
+            LocalBroadcastManager.getInstance(it).registerReceiver(testReceiver, IntentFilter(TEST_BROADCAST_INTENT_FILTER))
         }
     }
 
