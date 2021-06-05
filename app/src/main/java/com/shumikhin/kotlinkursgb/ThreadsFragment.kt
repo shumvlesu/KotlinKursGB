@@ -1,6 +1,9 @@
 package com.shumikhin.kotlinkursgb
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -11,14 +14,48 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.shumikhin.kotlinkursgb.databinding.FragmentThreadsBinding
 import java.util.*
+
+const val TEST_BROADCAST_INTENT_FILTER = "TEST BROADCAST INTENT FILTER"
+const val THREADS_FRAGMENT_BROADCAST_EXTRA = "THREADS_FRAGMENT_EXTRA"
 
 class ThreadsFragment : Fragment() {
 
     private var _binding: FragmentThreadsBinding? = null
     private val binding get() = _binding!!
     private var counterThread = 0
+
+    //Создаём свой BroadcastReceiver (получатель широковещательного сообщения)
+    //Этот просто более компактная версия из MainBroadcastReceiver
+    private val testReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            //Достаём данные из интента
+            intent.getStringExtra(THREADS_FRAGMENT_BROADCAST_EXTRA)?.let {
+                addView(context, it)
+            }
+        }
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+       //context?.registerReceiver(testReceiver, IntentFilter(TEST_BROADCAST_INTENT_FILTER))
+        context?.let {
+            LocalBroadcastManager.getInstance(it)
+                .registerReceiver(testReceiver,
+                    IntentFilter(TEST_BROADCAST_INTENT_FILTER))
+        }
+    }
+
+    override fun onDestroy() {
+        //context?.unregisterReceiver(testReceiver)
+        context?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(testReceiver)
+        }
+        super.onDestroy()
+    }
 
 
     override fun onCreateView(
@@ -85,7 +122,11 @@ class ThreadsFragment : Fragment() {
 
         }
 
+        //Service
         initServiceButton()
+
+        //BroadcastReceiver
+        initServiceWithBroadcastButton()
 
     }
 
@@ -100,6 +141,23 @@ class ThreadsFragment : Fragment() {
                 })
             }
         }
+    }
+
+    private fun initServiceWithBroadcastButton() {
+        binding.serviceWithBroadcastButton.setOnClickListener {
+            context?.let {
+                it.startService(Intent(it, MainService::class.java).apply {
+                    putExtra(MAIN_SERVICE_INT_EXTRA, binding.editText.text.toString().toInt())
+                })
+            }
+        }
+    }
+
+    private fun addView(context: Context, textToShow: String) {
+        binding.mainContainer.addView(AppCompatTextView(context).apply {
+            text = textToShow
+            textSize = resources.getDimension(R.dimen.main_container_text_size)
+        })
     }
 
     private fun startCalculations(seconds: Int): String {

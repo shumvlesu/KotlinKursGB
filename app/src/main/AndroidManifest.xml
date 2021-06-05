@@ -19,6 +19,13 @@
 
         <service android:name=".MainService" />
 
+        <!--Подписываемся на широковещательное соообщение от ос о смене языка системы-->
+        <receiver android:name=".MainBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
