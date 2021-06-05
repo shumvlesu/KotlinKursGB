@@ -68,7 +68,6 @@ class ThreadsFragment : Fragment() {
         val handler = Handler(handlerThread.looper)
 
         binding.calcThreadHandler.setOnClickListener {
-
             binding.mainContainer.addView(AppCompatTextView(it.context).apply {
                 text = String.format(getString(R.string.calculate_in_thread), handlerThread.name)
                 textSize = resources.getDimension(R.dimen.main_container_text_size)
@@ -76,7 +75,7 @@ class ThreadsFragment : Fragment() {
 
             handler.post { //помещаем нашу задачу в HandlerThread
                 startCalculations(binding.editText.text.toString().toInt())
-                binding.mainContainer.post {
+                binding.mainContainer.post {//тут post - это помещение в основной UI поток
                     binding.mainContainer.addView(AppCompatTextView(it.context).apply {
                         text = String.format(getString(R.string.calculate_in_thread), Thread.currentThread().name)
                         textSize = resources.getDimension(R.dimen.main_container_text_size)
@@ -92,6 +91,7 @@ class ThreadsFragment : Fragment() {
 
 
     //Service
+    //Обычный сервис запускает задачу в основном потоке, что плохо. А IntentService запускает в бэкграунде.
     private fun initServiceButton() {
         binding.serviceButton.setOnClickListener {
             context?.let {

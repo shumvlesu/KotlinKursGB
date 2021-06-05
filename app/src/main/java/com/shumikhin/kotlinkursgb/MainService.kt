@@ -7,6 +7,7 @@ import android.util.Log
 private const val TAG = "MainServiceTAG"
 const val MAIN_SERVICE_STRING_EXTRA = "MainServiceExtra"
 
+//Обычный сервис запускает задачу в основном потоке, что плохо. А IntentService запускает в бэкграунде.
 class MainService(name: String = "MainService") : IntentService(name) {
 
     override fun onHandleIntent(intent: Intent?) {
