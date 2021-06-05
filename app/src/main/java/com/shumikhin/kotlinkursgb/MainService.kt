@@ -45,6 +45,7 @@ class MainService(name: String = "MainService") : IntentService(name) {
         //LocalBroadcastManager. Он более эффективен в пересылке сообщений внутри приложения.
 
         //sendBroadcast(broadcastIntent)
+        //sendBroadcast - отправляем наш броадкаст. Отсюда наш броадкаст и уходит.
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
     }
 
